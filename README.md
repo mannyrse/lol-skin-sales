@@ -1,2 +1,3 @@
-# lol-skin-sales
-League of Legends weekly skin sale website.
+# League of Legends Skin Sales Website
+
+View this week's LoL skin deals at [lolskinsale.com](https://lolskinsale.com)
