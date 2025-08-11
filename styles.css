@@ -25,17 +25,32 @@
     position: absolute;
     top: 0;
     left: 0;
+    z-index: 1000;
 }
 
 .logo {
     color: white;
-    position: absolute;
-    left: 30px;
     text-decoration: none;
     transition: color 0.3s ease;
 }
 
 .logo:hover {
+    color: #E2BA3D;
+}
+
+.navbar ul {
+    display: flex;
+    gap: 20px;
+    list-style: none;
+}
+
+.navbar ul li a {
+    color: white;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.navbar ul li a:hover {
     color: #E2BA3D;
 }
 
@@ -58,11 +73,32 @@
     gap: 16px;
 }
 
-
 .header p {
     color: white;
     margin: 20px 0px;
     font-size: 1.5rem;
+}
+
+@media (max-width: 768px) {
+    .header {
+        min-height: 100vh;
+        padding: 20px;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .title {
+        font-size: clamp(1.5rem, 6vw + 0.5rem, 2.5rem);
+    }
+
+    .subline {
+        font-size: clamp(1rem, 5vw + 0.3rem, 1.8rem);
+    }
+
+    .header p {
+        font-size: 1.2rem;
+    }
 }
 
 /* typography  */
@@ -124,8 +160,6 @@
     text-align: center;
     padding: 20px 10px;
     font-size: 1rem;
-    font-weight: 500;
-    font-family: Arial, Helvetica, sans-serif;
 }
 
 .footer a {
