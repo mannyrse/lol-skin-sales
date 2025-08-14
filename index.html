@@ -4,18 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LoL Skin Sale</title>
+    <title>LoL Skin Sale - Current Sales</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 </head>
 
 <body>
+    <!-- header  -->
     <header class="header">
         <nav class="navbar">
-            <a href="index.html" class="logo">LoL Skin Sale</a>
-            <!-- <ul>
-                <li><a href="#">Skin Sales</a></li>
-                <li><a href="#">Mythic Skins</a></li>
-            </ul> -->
+            <a href="." class="logo">LoL Skin Sale</a>
+            <button class="nav-toggle" aria-label="Toggle navigation">
+                <span class="hamburger"></span>
+                <span class="hamburger"></span>
+                <span class="hamburger"></span>
+            </button>
+            <ul id="navLinks">
+                <li><a href="." class="active">Skin Sales</a></li>
+                <li><a href="past-sales.html">Past Sales</a></li>
+            </ul>
         </nav>
         <div>
             <h1 class="title">
@@ -23,48 +30,19 @@
                 <span class="subline">Weekly Skin Sale</span>
             </h1>
             <p id="dateRange"></p>
-            <p class="browse">Browse this week's League of Legends skin sales</p>
+            <p>Browse this week's League of Legends skin sales</p>
         </div>
     </header>
+    <!-- skin sale cards section  -->
     <main>
         <h2 class="section-title">Skin Sales</h2>
         <div class="sale-info">
-            <p>Weekly skin sales refresh every Monday at 12PM PT</p>
+            <p>Weekly sales refresh every Monday at 12PM PT</p>
         </div>
         <div id="loadingSpinner" class="loading-spinner"></div>
         <div class="card-container" id="cardContainer"></div>
-        <!-- <h2 class="section-title mythic">Mythic Skins</h2>
-        <div class="sale-info">
-            <p>Patch 25.15</p>
-            <p>Mythic skin selections rotate with each new patch.</p>
-        </div>
-        <div class="card-container">
-            <div class="skin-card mythic-card">
-                <img src="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ahri_27.jpg"
-                    alt="Spirit Blossom Ahri">
-                <h3>Spirit Blossom Ahri</h3>
-                <p>Champion: Ahri</p>
-                <p><img class="rp-icon mythic" src="images/mythic_icon.png"> 150 ME</p>
-                <a href="https://www.youtube.com/watch?v=example" target="_blank">View Skin Spotlight</a>
-            </div>
-            <div class="skin-card mythic-card">
-                <img src="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ahri_27.jpg"
-                    alt="Spirit Blossom Ahri">
-                <h3>Spirit Blossom Ahri</h3>
-                <p>Champion: Ahri</p>
-                <p><img class="rp-icon mythic" src="images/mythic_icon.png"> 150 ME</p>
-                <a href="https://www.youtube.com/watch?v=example" target="_blank">View Skin Spotlight</a>
-            </div>
-            <div class="skin-card mythic-card">
-                <img src="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ahri_27.jpg"
-                    alt="Spirit Blossom Ahri">
-                <h3>Spirit Blossom Ahri</h3>
-                <p>Champion: Ahri</p>
-                <p><img class="rp-icon mythic" src="images/mythic_icon.png"> 150 ME</p>
-                <a href="https://www.youtube.com/watch?v=example" target="_blank">View Skin Spotlight</a>
-            </div>
-        </div> -->
     </main>
+    <!-- footer -->
     <footer class="footer">
         <p>© 2025 LoL Skin Sale. All rights reserved.</p>
         <p>
@@ -73,8 +51,8 @@
                 Portal</a>
         </p>
     </footer>
-
 </body>
-<script src="script.js"></script>
+<script src="scripts/script.js"></script>
+<script src="scripts/menu.js"></script>
 
 </html>

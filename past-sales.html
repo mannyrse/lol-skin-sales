@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LoL Skin Sale - Past Sales</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+</head>
+
+<body>
+    <!-- header section -->
+    <header class="header">
+        <nav class="navbar">
+            <a href="." class="logo">LoL Skin Sale</a>
+            <button class="nav-toggle" aria-label="Toggle navigation">
+                <span class="hamburger"></span>
+                <span class="hamburger"></span>
+                <span class="hamburger"></span>
+            </button>
+            <ul id="navLinks">
+                <li><a href=".">Skin Sales</a></li>
+                <li><a href="past-sales.html" class="active">Past Sales</a></li>
+            </ul>
+        </nav>
+        <div>
+            <h1 class="title">
+                League of Legends<br>
+                <span class="subline">Past Skin Sales</span>
+            </h1>
+            <p>Search for skins that have appeared in previous sales</p>
+        </div>
+    </header>
+    <!-- past sales table section -->
+    <main>
+        <h2 class="section-title">Past Sales</h2>
+
+        <div class="week-filter-container">
+            <label for="weekSelect">Select Week:</label>
+            <select id="weekSelect">
+                <option value="">-- Choose a week --</option>
+                <!-- week options will be injected here -->
+            </select>
+        </div>
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Champion or skin name">
+            <button id="searchButton">Search</button>
+            <button id="resetButton">Reset</button>
+        </div>
+        <div class="table-wrapper">
+            <table id="skinTable" class="skin-table">
+                <thead>
+                    <tr>
+                        <th>Week</th>
+                        <th>Champion</th>
+                        <th>Skin</th>
+                        <th>Price</th>
+                        <th>Discount</th>
+                        <th>Spotlight</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- rows will be injected here -->
+                </tbody>
+            </table>
+            <div id="paginationControls" class="pagination-controls"></div>
+        </div>
+
+        <div id="loadingSpinner" class="loading-spinner"></div>
+    </main>
+    <!-- footer -->
+    <footer class="footer">
+        <p>© 2025 LoL Skin Sale. All rights reserved.</p>
+        <p>
+            Data from Riot API and community contributions.
+            <a href="https://developer.riotgames.com/" target="_blank" rel="noopener noreferrer">Riot Developer
+                Portal</a>
+        </p>
+    </footer>
+</body>
+
+<script src="scripts/past-sales.js"></script>
+<script src="scripts/menu.js"></script>
+
+</html>
