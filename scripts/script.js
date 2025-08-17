@@ -41,11 +41,14 @@ function buildSplashUrl(champion, skinNum) {
 // Render all skins to the page
 async function renderSkins() {
 
-    // Auto-generate the current week's date range
-    const weekZero = new Date(2025, 7, 4);
-    const today = new Date();
+    // Auto-generate the current week's date range (cutoff at 12 PM PT)
     const msPerWeek = 7 * 24 * 60 * 60 * 1000;
-    const weeksPassed = Math.floor((today - weekZero) / msPerWeek);
+    const weekZero = new Date("2025-08-04T12:00:00-07:00");
+    const nowUtc = new Date();
+    const nowPt = new Date(
+        nowUtc.toLocaleString("en-US", { timeZone: "America/Los_Angeles" })
+    );
+    const weeksPassed = Math.floor((nowPt - weekZero) / msPerWeek);
     const currentWeekStart = new Date(weekZero.getTime() + weeksPassed * msPerWeek);
     const nextWeekStart = new Date(currentWeekStart.getTime() + msPerWeek);
 
