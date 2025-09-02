@@ -1,4 +1,4 @@
-const patchVersion = "15.15.1";
+const patchVersion = "15.17.1";
 
 // Fetch data from personal Google sheets
 async function fetchSkinData() {
@@ -7,40 +7,47 @@ async function fetchSkinData() {
     return data;
 }
 
-// Format champion ID correctly for Riot API (e.g., "Miss Fortune" -> "MissFortune")
-function formatChampionId(name) {
-    return name
-        .toLowerCase()
-        .split(" ")
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-        .join("");
+// Fetch the full champion data (all champs + skins) once
+async function fetchChampionFull() {
+    if (!window._championFull) {
+        const url = `https://ddragon.leagueoflegends.com/cdn/${patchVersion}/data/en_US/championFull.json`;
+        const response = await fetch(url);
+        const data = await response.json();
+        window._championFull = data.data; // object keyed by championId
+    }
+    return window._championFull;
 }
 
-// Fetch LoL champion data
-async function fetchChampionData(champion) {
-    const url = `https://ddragon.leagueoflegends.com/cdn/${patchVersion}/data/en_US/champion/${champion}.json`;
-    const response = await fetch(url);
-    const data = await response.json();
-    return data.data[champion];
+// Find champion ID from championFull by name
+async function getChampionId(name) {
+    const champFull = await fetchChampionFull();
+    const champs = Object.values(champFull);
+    const champ = champs.find(
+        c => c.name.toLowerCase().replace(/['\s]/g, "") === name.toLowerCase().replace(/['\s]/g, "")
+    );
+    return champ ? champ.id : null;
 }
 
-// Match skin by name (case insensitive + trimmed)
-function findSkinNumber(championData, skinName) {
+// Find skin number by matching name
+async function findSkinNumber(championId, skinName) {
+    const champFull = await fetchChampionFull();
+    const champ = champFull[championId];
+    if (!champ) return 0;
+
     return (
-        championData.skins.find(
+        champ.skins.find(
             s => s.name.trim().toLowerCase() === skinName.trim().toLowerCase()
         )?.num || 0
     );
 }
 
 // Construct splash art image URL
-function buildSplashUrl(champion, skinNum) {
-    return `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${champion}_${skinNum}.jpg`;
+function buildSplashUrl(championId, skinNum) {
+    return `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${championId}_${skinNum}.jpg`;
 }
 
 // Render all skins to the page
 async function renderSkins() {
-
     // Auto-generate the current week's date range
     const weekZero = new Date(2025, 7, 4);
     const today = new Date();
@@ -53,7 +60,6 @@ async function renderSkins() {
     const options = { year: "numeric", month: "long", day: "numeric" };
     const formattedRange = `${currentWeekStart.toLocaleDateString("en-US", options)} – ${nextWeekStart.toLocaleDateString("en-US", options)}`;
 
-    // Inject into page
     document.getElementById("dateRange").textContent = formattedRange;
 
     const container = document.getElementById("cardContainer");
@@ -64,9 +70,13 @@ async function renderSkins() {
 
     for (const skin of skinData) {
         try {
-            const champId = formatChampionId(skin.champion);
-            const champData = await fetchChampionData(champId);
-            const skinNum = findSkinNumber(champData, skin.skin);
+            const champId = await getChampionId(skin.champion);
+            if (!champId) {
+                console.error(`Champion not found: ${skin.champion}`);
+                continue;
+            }
+
+            const skinNum = await findSkinNumber(champId, skin.skin);
             const splashUrl = buildSplashUrl(champId, skinNum);
 
             const card = document.createElement("div");
@@ -82,7 +92,7 @@ async function renderSkins() {
             container.appendChild(card);
 
         } catch (error) {
-            console.error(`Error fetching data for ${skin.champion}:`, error);
+            console.error(`Error rendering skin for ${skin.champion}:`, error);
         } finally {
             loading.style.display = "none";
         }
@@ -94,7 +104,6 @@ renderSkins();
 
 // Fullscreen images on click
 document.addEventListener('DOMContentLoaded', () => {
-    // Delegate click event to images inside skin cards
     document.getElementById('cardContainer').addEventListener('click', (event) => {
         if (event.target.classList.contains('splash-img')) {
             openFullscreen(event.target.src, event.target.alt);
@@ -102,11 +111,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function openFullscreen(imgSrc, altText) {
-        // Create overlay element
         const overlay = document.createElement('div');
         overlay.classList.add('fullscreen-overlay');
 
-        // Create fullscreen image
         const fullscreenImg = document.createElement('img');
         fullscreenImg.src = imgSrc;
         fullscreenImg.alt = altText || '';
@@ -114,14 +121,12 @@ document.addEventListener('DOMContentLoaded', () => {
         overlay.appendChild(fullscreenImg);
         document.body.appendChild(overlay);
 
-        // Close fullscreen on clicking overlay (but NOT on clicking the image)
         overlay.addEventListener('click', (e) => {
             if (e.target === overlay) {
                 document.body.removeChild(overlay);
             }
         });
 
-        // Optional: close on pressing ESC key
         function escListener(e) {
             if (e.key === 'Escape') {
                 if (document.body.contains(overlay)) {
