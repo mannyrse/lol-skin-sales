@@ -41,9 +41,18 @@ async function findSkinNumber(championId, skinName) {
     );
 }
 
-// Construct splash art image URL
+// Construct splash art image URL (with special-case handling)
 function buildSplashUrl(championId, skinNum) {
-    return `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${championId}_${skinNum}.jpg`;
+    // Riot’s inconsistent champion naming for splash images
+    const specialCases = {
+        Fiddlesticks: "FiddleSticks",
+        // Add more if others exist?
+        // Wukong: "MonkeyKing",
+    };
+
+    const realId = specialCases[championId] || championId;
+
+    return `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${realId}_${skinNum}.jpg`;
 }
 
 // Render all skins to the page
