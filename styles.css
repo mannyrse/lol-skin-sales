@@ -213,7 +213,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: clamp(2rem, 4vw + 1rem, 3rem);
+    font-size: clamp(1.5rem, 4vw + 0.5rem, 3rem);
     color: #E2BA3D;
     margin: 40px 0 10px;
     position: relative;
@@ -227,7 +227,7 @@
     flex: 1;
     height: 5px;
     background-color: #E2BA3D;
-    max-width: 60px;
+    max-width: 40px;
     border-radius: 4px;
 }
 
@@ -278,6 +278,10 @@
 /* component - skin card */
 
 .skin-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
     position: relative;
     width: 100%;
     max-width: 350px;
@@ -301,19 +305,20 @@
 
 .skin-card h3 {
     margin: 8px;
+    padding-top: 10px
 }
 
 .skin-card p {
-    margin: 8px;
+    margin: 4px 8px;
 }
 
 .skin-card a {
     display: block;
     width: 95%;
-    margin: 12px auto;
+    margin: 8px auto;
     color: white;
     background: #E2BA3D;
-    padding: 6px 12px;
+    padding: 5px 10px;
     border-radius: 20px;
     text-decoration: none;
     text-align: center;
@@ -374,7 +379,6 @@
 
 .section-title.mythic {
     color: #741A81;
-    margin-top: 20px;
 }
 
 .skin-card.mythic-card a {
@@ -394,6 +398,16 @@
 .section-title.mythic::before,
 .section-title.mythic::after {
     background-color: #741A81;
+}
+
+.loading-spinner.mythic {
+    border: 6px solid #f3f3f3;
+    border-top: 6px solid #741A81;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    margin: 60px auto;
 }
 
 /* fullscreen overlay */
