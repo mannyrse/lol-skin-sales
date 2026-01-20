@@ -1,4 +1,4 @@
-const patchVersion = "15.20.1";
+const patchVersion = "16.1.1";
 
 // Fetch data from personal Google sheets
 async function fetchSkinData() {
