@@ -5,9 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
-        content="Stay updated with the latest League of Legends weekly skin sales. Browse current skin discounts, refreshed every Monday.">
+        content="View the current mythic skin rotation in League of Legends. Discover which exclusive mythic skins are available in the LoL Mythic Shop this patch. Mythic shop rotates every two patches.">
     <meta name="keywords" content="League of Legends, LoL skin sale, weekly skin sale, champion skins, LoL discounts">
-    <title>LoL Skin Sale - Current Sales</title>
+    <title>LoL Skin Sale - Mythic Skin Rotation</title>
     <link rel="canonical" href="https://lolskinsale.com/" />
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -24,28 +24,37 @@
                 <span class="hamburger"></span>
             </button>
             <ul id="navLinks">
-                <li><a href="/" class="active">Skin Sales</a></li>
-                <li><a href="mythic-skins.html">Mythic Skins</a></li>
+                <li><a href="/">Skin Sales</a></li>
+                <li><a href="mythic-skins.html" class="active">Mythic Skins</a></li>
                 <li><a href="past-sales.html">Past Sales</a></li>
             </ul>
         </nav>
         <div>
             <h1 class="title">
                 League of Legends<br>
-                <span class="subline">Weekly Skin Sale</span>
+                <span class="subline">Mythic Skin Rotation</span>
             </h1>
-            <p id="dateRange"></p>
-            <p>Browse this week's League of Legends skin sales</p>
+            <p>Browse the current League of Legends Mythic Skin Shop</p>
+            <p id="patch"></p>
         </div>
     </header>
     <!-- skin sale cards section  -->
     <main>
-        <h2 class="section-title">Skin Sales</h2>
+        <!-- featured mythic skins -->
+        <h2 class="section-title mythic">Featured Skins</h2>
         <div class="sale-info">
-            <p>Weekly sales refresh every Monday at 12PM PT</p>
+            <p>Featured skins are highlighted mythic skins available for an extended limited time.</p>
         </div>
-        <div id="loadingSpinner" class="loading-spinner"></div>
-        <div class="card-container" id="cardContainer"></div>
+        <div id="loadingSpinner" class="loading-spinner mythic"></div>
+        <div id="featuredContainer" class="card-container mythic"></div>
+
+        <!-- bi weekly mythic skins -->
+        <h2 class="section-title mythic">Bi-Weekly Rotation</h2>
+        <div class="sale-info">
+            <p>Bi-Weekly Mythic Shop Selection Rotates Every 2 Weeks</p>
+        </div>
+        <div class="card-container mythic" id="cardContainer"></div>
+
     </main>
     <!-- footer -->
     <footer class="footer">
@@ -57,7 +66,7 @@
         </p>
     </footer>
 </body>
-<script src="scripts/script.js"></script>
+<script src="scripts/mythic-skins.js"></script>
 <script src="scripts/menu.js"></script>
 
 </html>
