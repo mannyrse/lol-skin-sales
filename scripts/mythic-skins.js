@@ -1,6 +1,6 @@
-const patchVersion = "15.24.1";
+const patchVersion = "16.1.1";
 
-// Fetch mythic skins from your new sheet
+// Fetch mythic skins from the new sheet
 async function fetchSkinData() {
     const response = await fetch(
         "https://script.google.com/macros/s/AKfycbxqlNW0mNo7FsGo0hR2_2jwJ_WAxC1HiJoKB92Sfupv_1llL1vz04DKRivr-vxPtpQwvQ/exec?sheet=Mythic"
