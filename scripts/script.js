@@ -1,4 +1,4 @@
-const patchVersion = "15.24.1";
+const patchVersion = "16.1.1";
 
 // Fetch data from personal Google sheets
 async function fetchSkinData() {
@@ -57,14 +57,17 @@ function buildSplashUrl(championId, skinNum) {
 
 // Render all skins to the page
 async function renderSkins() {
-    const weekZero = new Date(2025, 10, 3);
+    // Auto-generate the current week's date range
+    const weekZero = new Date(2025, 7, 4);
     const today = new Date();
     const msPerWeek = 7 * 24 * 60 * 60 * 1000;
     const weeksPassed = Math.floor((today - weekZero) / msPerWeek);
     const currentWeekStart = new Date(weekZero.getTime() + weeksPassed * msPerWeek);
-    const currentWeekEnd = new Date(currentWeekStart.getTime() + msPerWeek);
+    const nextWeekStart = new Date(currentWeekStart.getTime() + msPerWeek);
+
+    // Format as "Month Day, Year"
     const options = { year: "numeric", month: "long", day: "numeric" };
-    const formattedRange = `${currentWeekStart.toLocaleDateString("en-US", options)} – ${currentWeekEnd.toLocaleDateString("en-US", options)}`;
+    const formattedRange = `${currentWeekStart.toLocaleDateString("en-US", options)} – ${nextWeekStart.toLocaleDateString("en-US", options)}`;
 
     document.getElementById("dateRange").textContent = formattedRange;
 
