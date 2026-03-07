@@ -133,7 +133,7 @@ async function renderSkins() {
                         <span class="price-tag">
                             <img class="rp-icon" src="images/RP_icon.png" alt="RP"><strong>${skin.price} RP</strong>
                         </span>
-                        <a href="${skin.spotlight}" target="_blank">▶ Spotlight</a>
+                        <a href="${skin.spotlight}" target="_blank">Spotlight</a>
                     </div>
                 </div>
             `;
