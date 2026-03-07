@@ -76,7 +76,6 @@
     transform-origin: center;
 }
 
-/* open state */
 .nav-toggle.open .hamburger:nth-child(1) {
     transform: rotate(45deg) translate(5px, 5px);
 }
@@ -191,7 +190,7 @@
     }
 }
 
-/* typography  */
+/* typography */
 
 .title {
     color: #E2BA3D;
@@ -207,7 +206,6 @@
     color: #E2BA3D;
     font-weight: 500;
 }
-
 
 .section-title {
     display: flex;
@@ -262,95 +260,252 @@
     color: #E2BA3D;
 }
 
-
 /* skin card grid */
 
 .card-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 24px;
-    padding: 40px 20px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+    padding: 40px 30px 60px;
     justify-items: center;
-    max-width: 1200px;
+    max-width: 1100px;
     margin: 0 auto;
 }
 
-/* component - skin card */
+@media (max-width: 768px) {
+    .card-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .card-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+
 
 .skin-card {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 100%;
     position: relative;
     width: 100%;
-    max-width: 350px;
-    border: 1px solid #ccc;
-    border-radius: 20px;
+    max-width: 340px;
+    border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: #ffffff;
+    border: 1px solid #e4ddf5;
+    box-shadow: 0 2px 12px rgba(52, 46, 130, 0.09);
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+        box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    display: flex;
+    flex-direction: column;
 }
 
 .skin-card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 14px 36px rgba(52, 46, 130, 0.16), 0 0 0 2px #E2BA3D;
     z-index: 10;
 }
 
-.skin-card img {
+/* image wrapper */
+.skin-card .card-img-wrap {
+    position: relative;
     width: 100%;
-    height: auto;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.skin-card .card-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+    cursor: pointer;
+    transition: transform 0.45s ease;
+}
+
+.skin-card:hover .card-img-wrap img {
+    transform: scale(1.06);
+}
+
+/* card body */
+.skin-card .card-body {
+    padding: 14px 16px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+}
+
+.skin-card .champion-name {
+    font-size: 0.75rem;
+    color: #7b73c0;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+    flex-shrink: 0;
 }
 
 .skin-card h3 {
-    margin: 8px;
-    padding-top: 10px
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #1e1749;
+    line-height: 1.2;
+    flex: 1;
 }
 
-.skin-card p {
-    margin: 4px 8px;
+/* price */
+.skin-card .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding-top: 10px;
+    border-top: 1px solid #ede8f9;
+    flex-shrink: 0;
+    overflow: hidden;
 }
 
-.skin-card a {
-    display: block;
-    width: 95%;
-    margin: 8px auto;
-    color: white;
-    background: #E2BA3D;
-    padding: 5px 10px;
-    border-radius: 20px;
-    text-decoration: none;
-    text-align: center;
-    border: 2px solid transparent;
-    transition: all 0.2s ease;
+.skin-card .price-tag {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #342e82;
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
-.skin-card a:hover {
-    color: #E2BA3D;
-    background: #fff;
-    border-color: #E2BA3D;
-}
-
-.discount-badge {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    background-color: #D7263D;
-    color: white;
-    padding: 6px 10px;
-    border-radius: 15px;
-    font-size: 0.9rem;
-    font-weight: bold;
-    z-index: 1;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-}
-
-.skin-card .rp-icon {
+.skin-card .price-tag .rp-icon {
     width: 16px;
     height: 16px;
     vertical-align: middle;
-    margin-right: 4px;
+}
+
+.skin-card a {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: white;
+    background: #E2BA3D;
+    padding: 7px clamp(6px, 1.5vw, 14px);
+    border-radius: 30px;
+    text-decoration: none;
+    font-size: clamp(0.65rem, 1.2vw, 0.8rem);
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    border: 2px solid transparent;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    white-space: nowrap;
+    flex-shrink: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.skin-card a:hover {
+    background: #fff;
+    color: #E2BA3D;
+    border-color: #E2BA3D;
+}
+
+/* discount badge */
+.discount-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: linear-gradient(135deg, #D7263D, #b01e31);
+    color: white;
+    padding: 5px 11px;
+    border-radius: 30px;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    z-index: 2;
+    box-shadow: 0 2px 8px rgba(215, 38, 61, 0.4);
+}
+
+/* filler card  */
+
+.brand-card {
+    background: linear-gradient(145deg, #342e82, #4b1c80);
+    border: 1px solid rgba(226, 186, 61, 0.3);
+    box-shadow: 0 2px 12px rgba(52, 46, 130, 0.2);
+    cursor: default;
+    min-height: 220px;
+}
+
+.brand-card:hover {
+    box-shadow: 0 14px 36px rgba(52, 46, 130, 0.3), 0 0 0 2px #E2BA3D;
+    transform: translateY(-5px) scale(1.02);
+}
+
+.brand-card-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 36px 20px;
+    text-align: center;
+    height: 100%;
+}
+
+.brand-card-logo {
+    width: 52px;
+    height: 52px;
+    background: rgba(226, 186, 61, 0.15);
+    border: 2px solid rgba(226, 186, 61, 0.4);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.brand-rp-icon {
+    width: 28px;
+    height: 28px;
+}
+
+.brand-card-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #E2BA3D;
+    letter-spacing: 0.03em;
+}
+
+.brand-card-sub {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.65);
+    line-height: 1.5;
+}
+
+.brand-card-link {
+    display: inline-flex;
+    align-items: center;
+    color: #1e1749 !important;
+    background: #E2BA3D !important;
+    padding: 8px 18px !important;
+    border-radius: 30px !important;
+    text-decoration: none !important;
+    font-size: 0.8rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.04em !important;
+    text-transform: uppercase !important;
+    border: 2px solid transparent !important;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease !important;
+    margin-top: 4px;
+}
+
+.brand-card-link:hover {
+    background: rgba(255, 255, 255, 0.12) !important;
+    color: #E2BA3D !important;
+    border-color: #E2BA3D !important;
 }
 
 /* loading spinner */
@@ -412,27 +567,24 @@
 
 /* fullscreen overlay */
 
-.skin-card img {
-    cursor: pointer;
-}
-
 .fullscreen-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.85);
+    background-color: rgba(0, 0, 0, 0.88);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 9999;
+    backdrop-filter: blur(6px);
 }
 
 .fullscreen-overlay img {
     max-width: 85vw;
     max-height: 85vh;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
     border-radius: 10px;
 }
 
@@ -515,7 +667,7 @@
     color: #E2BA3D;
 }
 
-/* skin Table */
+/* skin table */
 .skin-table {
     width: 90%;
     max-width: 1200px;
@@ -550,7 +702,6 @@
     vertical-align: middle;
 }
 
-/* mobile adjustments for search/reset buttons */
 @media (max-width: 768px) {
     .search-container {
         flex-direction: column;
@@ -593,7 +744,6 @@
     padding: 0 80px;
     box-sizing: border-box;
 }
-
 
 .pagination-controls button {
     padding: 6px 12px;

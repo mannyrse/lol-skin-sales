@@ -13,7 +13,7 @@ async function fetchChampionFull() {
         const url = `https://ddragon.leagueoflegends.com/cdn/${patchVersion}/data/en_US/championFull.json`;
         const response = await fetch(url);
         const data = await response.json();
-        window._championFull = data.data; // object keyed by championId
+        window._championFull = data.data;
     }
     return window._championFull;
 }
@@ -41,18 +41,52 @@ async function findSkinNumber(championId, skinName) {
     );
 }
 
-// Construct splash art image URL (with special-case handling)
+// Construct splash art image URL
 function buildSplashUrl(championId, skinNum) {
-    // Riot’s inconsistent champion naming for splash images
     const specialCases = {
         Fiddlesticks: "FiddleSticks",
-        // Add more if others exist?
-        // Wukong: "MonkeyKing",
     };
-
     const realId = specialCases[championId] || championId;
-
     return `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${realId}_${skinNum}.jpg`;
+}
+
+// Create a filler card
+function createBrandCard() {
+    const card = document.createElement("div");
+    card.className = "skin-card brand-card";
+    card.innerHTML = `
+        <div class="brand-card-inner">
+            <div class="brand-card-logo">
+                <img src="images/RP_icon.png" alt="RP" class="brand-rp-icon">
+            </div>
+            <p class="brand-card-title">LoL Skin Sale</p>
+            <p class="brand-card-sub">Weekly skin discounts,<br>refreshed every Monday.</p>
+        </div>
+    `;
+    return card;
+}
+
+// Calculate how many columns the grid currently has (mirrors CSS breakpoints)
+function getColumnCount() {
+    const w = window.innerWidth;
+    if (w <= 480) return 1;
+    if (w <= 768) return 2;
+    return 3;
+}
+
+function updateFillerCards(container, skinCount) {
+    container.querySelectorAll(".brand-card").forEach(c => c.remove());
+
+    const cols = getColumnCount();
+    if (cols <= 1) return;
+
+    const remainder = skinCount % cols;
+    if (remainder === 0) return;
+
+    const fillersNeeded = cols - remainder;
+    for (let i = 0; i < fillersNeeded; i++) {
+        container.appendChild(createBrandCard());
+    }
 }
 
 // Render all skins to the page
@@ -89,11 +123,19 @@ async function renderSkins() {
             card.className = "skin-card";
             card.innerHTML = `
                 <div class="discount-badge">${skin.discount}% OFF</div>
-                <img class="splash-img" loading="lazy" src="${splashUrl}" alt="${skin.skin}">
-                <h3>${skin.skin}</h3>
-                <p>Champion: ${skin.champion}</p>
-                <p><img class="rp-icon" src="images/RP_icon.png"><strong>${skin.price} RP</strong></p>
-                <a href="${skin.spotlight}" target="_blank">View Skin Spotlight</a>
+                <div class="card-img-wrap">
+                    <img class="splash-img" loading="lazy" src="${splashUrl}" alt="${skin.skin}">
+                </div>
+                <div class="card-body">
+                    <p class="champion-name">${skin.champion}</p>
+                    <h3>${skin.skin}</h3>
+                    <div class="card-footer">
+                        <span class="price-tag">
+                            <img class="rp-icon" src="images/RP_icon.png" alt="RP"><strong>${skin.price} RP</strong>
+                        </span>
+                        <a href="${skin.spotlight}" target="_blank">▶ Spotlight</a>
+                    </div>
+                </div>
             `;
             container.appendChild(card);
 
@@ -103,6 +145,19 @@ async function renderSkins() {
             loading.style.display = "none";
         }
     }
+
+    // Add filler cards after all skins are rendered
+    const skinCount = container.querySelectorAll(".skin-card:not(.brand-card)").length;
+    updateFillerCards(container, skinCount);
+
+    // Re-evaluate on resize
+    let resizeTimer;
+    window.addEventListener("resize", () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            updateFillerCards(container, skinCount);
+        }, 150);
+    });
 }
 
 // Start rendering on load
