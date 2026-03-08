@@ -14,6 +14,7 @@
 </head>
 
 <body>
+
     <!-- header section -->
     <header class="header">
         <nav class="navbar">
@@ -29,14 +30,21 @@
                 <li><a href="past-sales.html" class="active">Past Sales</a></li>
             </ul>
         </nav>
-        <div>
-            <h1 class="title">
-                League of Legends<br>
-                <span class="subline">Past Skin Sales</span>
-            </h1>
+
+        <div class="header-content">
+            <div class="header-eyebrow">
+                <span>League of Legends</span>
+            </div>
+            <h1 class="title">Past Skin Sales</h1>
             <p>Search for skins that have appeared in previous sales</p>
         </div>
+
+        <div class="scroll-cue" aria-hidden="true">
+            <span></span>
+            <span></span>
+        </div>
     </header>
+
     <!-- past sales table section -->
     <main>
         <h2 class="section-title">Past Sales</h2>
@@ -82,9 +90,9 @@
                 Portal</a>
         </p>
     </footer>
-</body>
 
-<script src="scripts/past-sales.js"></script>
-<script src="scripts/menu.js"></script>
+    <script src="scripts/past-sales.js"></script>
+    <script src="scripts/menu.js"></script>
+</body>
 
 </html>

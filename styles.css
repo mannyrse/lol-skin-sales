@@ -146,12 +146,13 @@
 /* header */
 
 .header {
-    background: linear-gradient(160deg, rgba(52, 46, 130, 0.85), rgba(75, 28, 128, 0.85), rgba(30, 23, 74, 0.85)),
+    background:
+        linear-gradient(160deg, rgba(22, 18, 80, 0.92), rgba(55, 18, 100, 0.88), rgba(15, 10, 50, 0.95)),
         url('/images/header.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    min-height: 60vh;
+    min-height: 65vh;
     padding: 0 20px;
     display: flex;
     flex-direction: column;
@@ -159,13 +160,123 @@
     align-items: center;
     text-align: center;
     position: relative;
-    gap: 16px;
+    gap: 0;
+    overflow: hidden;
+}
+
+.header-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+/* eyebrow line above title */
+.header-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    animation: fade-up 0.6s ease both;
+}
+
+.header-eyebrow span {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #E2BA3D;
+    opacity: 0.9;
+}
+
+.header-eyebrow::before,
+.header-eyebrow::after {
+    content: "";
+    display: block;
+    width: 36px;
+    height: 1.5px;
+    background: #E2BA3D;
+    opacity: 0.5;
+    border-radius: 2px;
+}
+
+/* date range pill */
+#dateRange {
+    display: inline-block;
+    background: rgba(226, 186, 61, 0.1);
+    border: 1px solid rgba(226, 186, 61, 0.3);
+    color: #E2BA3D;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    padding: 6px 20px;
+    border-radius: 30px;
+    margin-bottom: 15px;
+    animation: fade-up 0.6s 0.25s ease both;
 }
 
 .header p {
-    color: white;
-    margin: 20px 0px;
-    font-size: 1.5rem;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.95rem;
+    letter-spacing: 0.04em;
+    animation: fade-up 0.6s 0.4s ease both;
+    margin: 0;
+}
+
+/* scroll cue icon */
+.scroll-cue {
+    position: absolute;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    animation: bounce-cue 2.2s ease-in-out infinite;
+    z-index: 2;
+}
+
+.scroll-cue span {
+    display: block;
+    width: 9px;
+    height: 9px;
+    border-right: 2px solid rgba(226, 186, 61, 0.55);
+    border-bottom: 2px solid rgba(226, 186, 61, 0.55);
+    transform: rotate(45deg);
+}
+
+.scroll-cue span:nth-child(2) {
+    opacity: 0.4;
+}
+
+@keyframes bounce-cue {
+
+    0%,
+    100% {
+        transform: translateX(-50%) translateY(0);
+    }
+
+    50% {
+        transform: translateX(-50%) translateY(7px);
+    }
+}
+
+@keyframes fade-up {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.subline {
+    animation: fade-up 0.6s 0.12s ease both;
 }
 
 @media (max-width: 768px) {
@@ -186,7 +297,7 @@
     }
 
     .header p {
-        font-size: 1.2rem;
+        font-size: 0.9rem;
     }
 }
 
@@ -197,8 +308,9 @@
     font-size: clamp(2rem, 5vw + 1rem, 3.5rem);
     font-weight: 700;
     text-align: center;
-    margin: 0 auto 20px;
+    margin: 10px;
     line-height: 1.2;
+    animation: fade-up 0.6s 0.05s ease both;
 }
 
 .subline {
@@ -211,33 +323,40 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: clamp(1.5rem, 4vw + 0.5rem, 3rem);
-    color: #E2BA3D;
-    margin: 40px 0 10px;
+    font-size: clamp(1.4rem, 3vw + 0.5rem, 2.2rem);
+    color: #1e1749;
+    margin: 52px 0 0;
     position: relative;
     text-align: center;
-    gap: 20px;
+    gap: 18px;
+    letter-spacing: 0.04em;
 }
 
 .section-title::before,
 .section-title::after {
     content: "";
     flex: 1;
-    height: 5px;
-    background-color: #E2BA3D;
-    max-width: 40px;
-    border-radius: 4px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #E2BA3D);
+    max-width: 60px;
+    border-radius: 2px;
+}
+
+.section-title::after {
+    background: linear-gradient(90deg, #E2BA3D, transparent);
 }
 
 .sale-info {
-    color: #414141;
+    color: #888;
     text-align: center;
-    font-size: clamp(1rem, 2vw + 0.5rem, 1.5rem);
-    line-height: 1.4;
+    font-size: 0.88rem;
+    line-height: 1.6;
     font-weight: 500;
     max-width: 1000px;
-    margin: auto;
-    padding: 10px 50px 0px;
+    margin: 8px auto 0;
+    padding: 0 20px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
 }
 
 /* footer */
@@ -485,29 +604,6 @@
     line-height: 1.5;
 }
 
-.brand-card-link {
-    display: inline-flex;
-    align-items: center;
-    color: #1e1749 !important;
-    background: #E2BA3D !important;
-    padding: 8px 18px !important;
-    border-radius: 30px !important;
-    text-decoration: none !important;
-    font-size: 0.8rem !important;
-    font-weight: 700 !important;
-    letter-spacing: 0.04em !important;
-    text-transform: uppercase !important;
-    border: 2px solid transparent !important;
-    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease !important;
-    margin-top: 4px;
-}
-
-.brand-card-link:hover {
-    background: rgba(255, 255, 255, 0.12) !important;
-    color: #E2BA3D !important;
-    border-color: #E2BA3D !important;
-}
-
 /* loading spinner */
 
 .loading-spinner {
@@ -536,6 +632,14 @@
     color: #741A81;
 }
 
+.section-title.mythic::before {
+    background: linear-gradient(90deg, transparent, #741A81);
+}
+
+.section-title.mythic::after {
+    background: linear-gradient(90deg, #741A81, transparent);
+}
+
 .skin-card.mythic-card a {
     background: #741A81;
 }
@@ -548,11 +652,6 @@
 
 .rp-icon.mythic {
     margin-right: 0;
-}
-
-.section-title.mythic::before,
-.section-title.mythic::after {
-    background-color: #741A81;
 }
 
 .loading-spinner.mythic {

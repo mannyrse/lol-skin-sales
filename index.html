@@ -14,7 +14,8 @@
 </head>
 
 <body>
-    <!-- header  -->
+
+    <!-- header -->
     <header class="header">
         <nav class="navbar">
             <a href="/" class="logo">LoL Skin Sale</a>
@@ -30,24 +31,33 @@
                 <li><a href="past-sales.html">Past Sales</a></li>
             </ul>
         </nav>
-        <div>
-            <h1 class="title">
-                League of Legends<br>
-                <span class="subline">Weekly Skin Sale</span>
-            </h1>
+
+        <div class="header-content">
+            <div class="header-eyebrow">
+                <span>League of Legends</span>
+            </div>
+            <h1 class="title">Weekly Skin Sale</h1>
             <p id="dateRange"></p>
-            <p>Browse this week's League of Legends skin sales</p>
+            <p>Browse this week's discounted champion skins</p>
+        </div>
+
+        <!-- scroll cue -->
+        <div class="scroll-cue" aria-hidden="true">
+            <span></span>
+            <span></span>
         </div>
     </header>
-    <!-- skin sale cards section  -->
+
+    <!-- skin sale cards section -->
     <main>
         <h2 class="section-title">Skin Sales</h2>
         <div class="sale-info">
-            <p>Weekly sales refresh every Monday at 12PM PT</p>
+            <p>Refreshed every Monday at 12PM PT</p>
         </div>
         <div id="loadingSpinner" class="loading-spinner"></div>
         <div class="card-container" id="cardContainer"></div>
     </main>
+
     <!-- footer -->
     <footer class="footer">
         <p>© 2025 LoL Skin Sale. All rights reserved.</p>
@@ -57,8 +67,9 @@
                 Portal</a>
         </p>
     </footer>
+
+    <script src="scripts/script.js"></script>
+    <script src="scripts/menu.js"></script>
 </body>
-<script src="scripts/script.js"></script>
-<script src="scripts/menu.js"></script>
 
 </html>
