@@ -54,6 +54,23 @@
         <div class="sale-info">
             <p>Refreshed every Monday at 12PM PT</p>
         </div>
+        <div class="filter-bar">
+            <div class="filter-dropdown" id="filterDropdown">
+                <button class="filter-dropdown-btn" id="filterDropdownBtn">
+                    <span id="filterLabel">Sort: Default</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12"
+                        fill="currentColor">
+                        <path d="M6 8L1 3h10z" />
+                    </svg>
+                </button>
+                <div class="filter-menu" id="filterMenu">
+                    <button class="filter-option active" data-sort="default">Default</button>
+                    <button class="filter-option" data-sort="price-asc">Price: Low to High</button>
+                    <button class="filter-option" data-sort="price-desc">Price: High to Low</button>
+                    <button class="filter-option" data-sort="discount-desc">Biggest Discount</button>
+                </div>
+            </div>
+        </div>
         <div id="loadingSpinner" class="loading-spinner"></div>
         <div class="card-container" id="cardContainer"></div>
     </main>

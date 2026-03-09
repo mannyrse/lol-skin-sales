@@ -50,6 +50,29 @@ function buildSplashUrl(championId, skinNum) {
     return `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${realId}_${skinNum}.jpg`;
 }
 
+// Build a skin card element from a resolved skin entry
+function buildSkinCard(skin) {
+    const card = document.createElement("div");
+    card.className = "skin-card";
+    card.innerHTML = `
+        <div class="discount-badge">${skin.discount}% OFF</div>
+        <div class="card-img-wrap">
+            <img class="splash-img" loading="lazy" src="${skin.splashUrl}" alt="${skin.skin}">
+        </div>
+        <div class="card-body">
+            <p class="champion-name">${skin.champion}</p>
+            <h3>${skin.skin}</h3>
+            <div class="card-footer">
+                <span class="price-tag">
+                    <img class="rp-icon" src="images/RP_icon.png" alt="RP"><strong>${skin.price} RP</strong>
+                </span>
+                <a href="${skin.spotlight}" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" fill="currentColor" style="flex-shrink:0"><polygon points="1,0 10,5 1,10"/></svg> Spotlight</a>
+            </div>
+        </div>
+    `;
+    return card;
+}
+
 // Create a filler card
 function createBrandCard() {
     const card = document.createElement("div");
@@ -89,6 +112,24 @@ function updateFillerCards(container, skinCount) {
     }
 }
 
+// Sort a copy of the resolved skin data by the given sort key
+function sortSkins(skins, sortKey) {
+    const sorted = [...skins];
+    if (sortKey === "price-asc") sorted.sort((a, b) => a.price - b.price);
+    if (sortKey === "price-desc") sorted.sort((a, b) => b.price - a.price);
+    if (sortKey === "discount-desc") sorted.sort((a, b) => b.discount - a.discount);
+    // "default" keeps original order
+    return sorted;
+}
+
+// Re-render cards in the chosen sort order
+function renderSorted(container, resolvedSkins, sortKey) {
+    container.querySelectorAll(".skin-card").forEach(c => c.remove());
+    const sorted = sortSkins(resolvedSkins, sortKey);
+    sorted.forEach(skin => container.appendChild(buildSkinCard(skin)));
+    updateFillerCards(container, sorted.length);
+}
+
 // Render all skins to the page
 async function renderSkins() {
     const weekZero = new Date(2025, 10, 3);
@@ -108,6 +149,9 @@ async function renderSkins() {
 
     loading.style.display = "block";
 
+    // Resolve all skin data up front before rendering anything
+    const resolvedSkins = [];
+
     for (const skin of skinData) {
         try {
             const champId = await getChampionId(skin.champion);
@@ -115,47 +159,50 @@ async function renderSkins() {
                 console.error(`Champion not found: ${skin.champion}`);
                 continue;
             }
-
             const skinNum = await findSkinNumber(champId, skin.skin);
             const splashUrl = buildSplashUrl(champId, skinNum);
-
-            const card = document.createElement("div");
-            card.className = "skin-card";
-            card.innerHTML = `
-                <div class="discount-badge">${skin.discount}% OFF</div>
-                <div class="card-img-wrap">
-                    <img class="splash-img" loading="lazy" src="${splashUrl}" alt="${skin.skin}">
-                </div>
-                <div class="card-body">
-                    <p class="champion-name">${skin.champion}</p>
-                    <h3>${skin.skin}</h3>
-                    <div class="card-footer">
-                        <span class="price-tag">
-                            <img class="rp-icon" src="images/RP_icon.png" alt="RP"><strong>${skin.price} RP</strong>
-                        </span>
-                        <a href="${skin.spotlight}" target="_blank">Spotlight</a>
-                    </div>
-                </div>
-            `;
-            container.appendChild(card);
-
+            resolvedSkins.push({ ...skin, splashUrl });
         } catch (error) {
-            console.error(`Error rendering skin for ${skin.champion}:`, error);
-        } finally {
-            loading.style.display = "none";
+            console.error(`Error resolving skin for ${skin.champion}:`, error);
         }
     }
 
-    // Add filler cards after all skins are rendered
-    const skinCount = container.querySelectorAll(".skin-card:not(.brand-card)").length;
-    updateFillerCards(container, skinCount);
+    loading.style.display = "none";
 
-    // Re-evaluate on resize
+    // Initial render in default order
+    resolvedSkins.forEach(skin => container.appendChild(buildSkinCard(skin)));
+    updateFillerCards(container, resolvedSkins.length);
+
+    // Filter dropdown behaviour
+    const filterDropdown = document.getElementById("filterDropdown");
+    const filterDropdownBtn = document.getElementById("filterDropdownBtn");
+    const filterLabel = document.getElementById("filterLabel");
+    const filterOptions = document.querySelectorAll(".filter-option");
+
+    filterDropdownBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        filterDropdown.classList.toggle("open");
+    });
+
+    document.addEventListener("click", () => filterDropdown.classList.remove("open"));
+
+    filterOptions.forEach(btn => {
+        btn.addEventListener("click", () => {
+            filterOptions.forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            filterLabel.textContent = `Sort: ${btn.textContent}`;
+            filterDropdown.classList.remove("open");
+            renderSorted(container, resolvedSkins, btn.dataset.sort);
+        });
+    });
+
+    // Re-evaluate filler cards on resize
     let resizeTimer;
     window.addEventListener("resize", () => {
         clearTimeout(resizeTimer);
         resizeTimer = setTimeout(() => {
-            updateFillerCards(container, skinCount);
+            const activeSort = document.querySelector(".filter-option.active")?.dataset.sort || "default";
+            renderSorted(container, resolvedSkins, activeSort);
         }, 150);
     });
 }
