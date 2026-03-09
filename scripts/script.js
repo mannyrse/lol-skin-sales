@@ -54,6 +54,7 @@ function buildSplashUrl(championId, skinNum) {
 function buildSkinCard(skin) {
     const card = document.createElement("div");
     card.className = "skin-card";
+    card.dataset.skinId = skin.id;
     card.innerHTML = `
         <div class="discount-badge">${skin.discount}% OFF</div>
         <div class="card-img-wrap">
@@ -122,11 +123,19 @@ function sortSkins(skins, sortKey) {
     return sorted;
 }
 
-// Re-render cards in the chosen sort order
+// Re-render cards in the chosen sort order by reordering DOM nodes (no image reload)
 function renderSorted(container, resolvedSkins, sortKey) {
-    container.querySelectorAll(".skin-card").forEach(c => c.remove());
+    // Remove only filler cards
+    container.querySelectorAll(".brand-card").forEach(c => c.remove());
+
     const sorted = sortSkins(resolvedSkins, sortKey);
-    sorted.forEach(skin => container.appendChild(buildSkinCard(skin)));
+
+    // Reorder existing skin card nodes by matching data-skin-id
+    sorted.forEach(skin => {
+        const el = container.querySelector(`.skin-card[data-skin-id="${skin.id}"]`);
+        if (el) container.appendChild(el);
+    });
+
     updateFillerCards(container, sorted.length);
 }
 
@@ -161,7 +170,7 @@ async function renderSkins() {
             }
             const skinNum = await findSkinNumber(champId, skin.skin);
             const splashUrl = buildSplashUrl(champId, skinNum);
-            resolvedSkins.push({ ...skin, splashUrl });
+            resolvedSkins.push({ ...skin, splashUrl, id: `skin-${resolvedSkins.length}` });
         } catch (error) {
             console.error(`Error resolving skin for ${skin.champion}:`, error);
         }
