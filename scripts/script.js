@@ -156,6 +156,20 @@ async function renderSkins() {
     const loading = document.getElementById("loadingSpinner");
     const skinData = await fetchSkinData();
 
+    // Compare sheet date to current week start and update sale info text
+    const saleInfo = document.querySelector('.sale-info p');
+    if (saleInfo) {
+        const sheetDate = skinData[0]?.week;
+        const sheetWeekStart = new Date(sheetDate);
+        const isCurrent = sheetWeekStart.toDateString() === currentWeekStart.toDateString();
+
+        if (!isCurrent) {
+            saleInfo.textContent = "New skin sales drop today at 12PM PT - check back later for this week's updated selection!";
+        } else {
+            saleInfo.textContent = "This week's discounts are up to date - sales refresh every Monday at 12PM PT.";
+        }
+    }
+
     loading.style.display = "block";
 
     // Resolve all skin data up front before rendering anything
