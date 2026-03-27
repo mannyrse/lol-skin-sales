@@ -1105,3 +1105,14 @@ main {
     background: #342e82;
     color: white;
 }
+
+/* search propmt text */
+
+#searchPromptRow td {
+    text-align: center;
+    padding: 2rem;
+    color: #b0a8d8;
+    font-style: italic;
+    font-size: 0.9rem;
+    letter-spacing: 0.03em;
+}

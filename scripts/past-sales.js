@@ -43,6 +43,16 @@ function renderTableRows(skins, page = 1) {
     renderPaginationControls();
 }
 
+// show search prompt in empty table
+function showSearchPrompt() {
+    const tbody = document.querySelector("#skinTable tbody");
+    const tr = document.createElement("tr");
+    tr.id = "searchPromptRow";
+    tr.innerHTML = `
+    <td colspan="6">Use the search bar or select a week above to find past skin sales.</td>`;
+    tbody.appendChild(tr);
+}
+
 // render pagination controls
 function renderPaginationControls() {
     const paginationContainer = document.getElementById("paginationControls");
@@ -128,6 +138,8 @@ async function initPreviousSkins() {
         const weekSelect = document.getElementById("weekSelect");
 
         function applyFilters() {
+            const promptRow = document.getElementById("searchPromptRow");
+            if (promptRow) promptRow.remove();
             const query = searchInput.value.trim();
             const selectedWeek = weekSelect.value;
             const filtered = filterSkins(skins, query, selectedWeek);
@@ -138,15 +150,22 @@ async function initPreviousSkins() {
 
         searchButton.addEventListener("click", applyFilters);
         searchInput.addEventListener("keypress", e => { if (e.key === "Enter") applyFilters(); });
+        // let debounceTimer;
+        // searchInput.addEventListener("input", () => {
+        //     clearTimeout(debounceTimer);
+        //     debounceTimer = setTimeout(applyFilters, 250);
+        // });
         resetButton.addEventListener("click", () => {
             searchInput.value = "";
             weekSelect.value = "";
             renderTableRows([]); // reset table to empty
+            showSearchPrompt(); // re-show prompt on reset
         });
         weekSelect.addEventListener("change", applyFilters);
 
-        // Default: table empty
+        // Default: table empty, show prompt
         renderTableRows([]);
+        showSearchPrompt();
 
     } catch (err) {
         console.error("Error loading previous skins:", err);
