@@ -19,9 +19,9 @@ let currentFilteredSkins = [];
 
 // render table rows
 function renderTableRows(skins, page = 1) {
-    currentFilteredSkins = skins; // store filtered results for pagination
-    tableBody = document.querySelector("#skinTable tbody");
-    tableBody.innerHTML = ""; // clear existing rows
+    currentFilteredSkins = skins;
+    const tableBody = document.querySelector("#skinTable tbody");
+    tableBody.innerHTML = "";
 
     const start = (page - 1) * rowsPerPage;
     const end = start + rowsPerPage;
@@ -48,8 +48,16 @@ function showSearchPrompt() {
     const tbody = document.querySelector("#skinTable tbody");
     const tr = document.createElement("tr");
     tr.id = "searchPromptRow";
-    tr.innerHTML = `
-    <td colspan="6">Use the search bar or select a week above to find past skin sales.</td>`;
+    tr.innerHTML = `<td colspan="6">Use the search bar or select a week above to find past skin sales.</td>`;
+    tbody.appendChild(tr);
+}
+
+// show no results message
+function showNoResults() {
+    const tbody = document.querySelector("#skinTable tbody");
+    const tr = document.createElement("tr");
+    tr.id = "noResultsRow";
+    tr.innerHTML = `<td colspan="6">We couldn't find the skin or champion you were looking for.</td>`;
     tbody.appendChild(tr);
 }
 
@@ -133,37 +141,46 @@ async function initPreviousSkins() {
         populateWeekDropdown(skins);
 
         const searchInput = document.getElementById("searchInput");
-        const searchButton = document.getElementById("searchButton");
         const resetButton = document.getElementById("resetButton");
         const weekSelect = document.getElementById("weekSelect");
 
         function applyFilters() {
-            const promptRow = document.getElementById("searchPromptRow");
-            if (promptRow) promptRow.remove();
             const query = searchInput.value.trim();
             const selectedWeek = weekSelect.value;
+
+            // if both are empty, show the prompt
+            if (!query && !selectedWeek) {
+                renderTableRows([]);
+                showSearchPrompt();
+                return;
+            }
+
             const filtered = filterSkins(skins, query, selectedWeek);
-            currentPage = 1; // reset to first page on filter change
+            currentPage = 1;
             renderTableRows(filtered, currentPage);
+
+            // if no results found, show message
+            if (filtered.length === 0) {
+                showNoResults();
+            }
         }
 
+        let debounceTimer;
+        searchInput.addEventListener("input", () => {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(applyFilters, 250);
+        });
 
-        searchButton.addEventListener("click", applyFilters);
-        searchInput.addEventListener("keypress", e => { if (e.key === "Enter") applyFilters(); });
-        // let debounceTimer;
-        // searchInput.addEventListener("input", () => {
-        //     clearTimeout(debounceTimer);
-        //     debounceTimer = setTimeout(applyFilters, 250);
-        // });
         resetButton.addEventListener("click", () => {
             searchInput.value = "";
             weekSelect.value = "";
-            renderTableRows([]); // reset table to empty
-            showSearchPrompt(); // re-show prompt on reset
+            renderTableRows([]);
+            showSearchPrompt();
         });
+
         weekSelect.addEventListener("change", applyFilters);
 
-        // Default: table empty, show prompt
+        // Default: show prompt
         renderTableRows([]);
         showSearchPrompt();
 

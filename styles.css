@@ -1108,7 +1108,8 @@ main {
 
 /* search propmt text */
 
-#searchPromptRow td {
+#searchPromptRow td,
+#noResultsRow td {
     text-align: center;
     padding: 2rem;
     color: #b0a8d8;
