@@ -85,8 +85,12 @@ function createBrandCard() {
             </div>
             <p class="brand-card-title">LoL Skin Sale</p>
             <p class="brand-card-sub">Weekly skin discounts,<br>refreshed every Monday.</p>
+            <p class="brand-card-back">Back to top</p>
         </div>
     `;
+    card.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    });
     return card;
 }
 
