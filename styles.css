@@ -31,11 +31,29 @@
 .logo {
     color: white;
     text-decoration: none;
+    position: relative;
     transition: color 0.3s ease;
+    letter-spacing: 0.02em;
+}
+
+.logo::after {
+    content: "";
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 0%;
+    height: 1.5px;
+    background: #E2BA3D;
+    border-radius: 2px;
+    transition: width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 .logo:hover {
     color: #E2BA3D;
+}
+
+.logo:hover::after {
+    width: 100%;
 }
 
 .navbar ul {
