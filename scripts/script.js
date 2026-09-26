@@ -1,4 +1,4 @@
-const patchVersion = "16.1.1";
+let patchVersion; // now pulled from column G of the sheet instead of hardcoded
 
 // Fetch data from personal Google sheets
 async function fetchSkinData() {
@@ -159,6 +159,8 @@ async function renderSkins() {
     const container = document.getElementById("cardContainer");
     const loading = document.getElementById("loadingSpinner");
     const skinData = await fetchSkinData();
+
+    patchVersion = skinData[0]?.patch;
 
     // Compare sheet date to current week start and update sale info text
     const saleInfo = document.querySelector('.sale-info p');
