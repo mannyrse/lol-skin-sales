@@ -1,4 +1,4 @@
-const patchVersion = "16.11.1";
+let patchVersion; // now pulled from column G of the sheet instead of hardcoded
 
 // Fetch data from personal Google sheets
 async function fetchSkinData() {
